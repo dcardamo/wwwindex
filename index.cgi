@@ -4,7 +4,7 @@
 #                   Copyright 2000 all rights reserved
 #                   This software is released under the GNU GPL license
 ###################################################################################
-# 	$rcs = ' $Id: index.cgi,v 1.6 2001/12/31 05:40:21 dan Exp $ ' ;	
+# 	$rcs = ' $Id: index.cgi,v 1.7 2002/01/02 06:05:41 dan Exp $ ' ;	
 ###################################################################################
 use strict;
 use CGI qw(param);
@@ -109,7 +109,7 @@ sub printFiles {
 	  my $ext = $fnameExt[$#fnameExt];
 
 	  my $icon = "generic.gif";
-	  my $typedesc = "asdfasdf";
+	  my $typedesc = $ext;
 	  if ($ext =~ /htm/i || $ext =~ /html/i) { $icon = "portal.gif"; $typedesc = "HTML Document"}
 	  if ($ext =~ /txt/i) { $icon = "a.gif"; $typedesc = "Text File"}
 	  if ($ext =~ /(pl|cgi|py|sh|php)/i || $ext =~ /cgi/i) { $icon = "script.gif"; $typedesc = "Script Application" }
