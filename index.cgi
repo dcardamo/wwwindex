@@ -4,7 +4,7 @@
 #                   Copyright 2000 all rights reserved
 #                   This software is released under the GNU GPL license
 ###################################################################################
-# 	$rcs = ' $Id: index.cgi,v 1.4 2001/12/04 22:07:42 dan Exp $ ' ;	
+# 	$rcs = ' $Id: index.cgi,v 1.5 2001/12/06 22:29:58 dan Exp $ ' ;	
 ###################################################################################
 use strict;
 use CGI qw(param);
@@ -116,6 +116,10 @@ sub printFiles {
 	  if ($ext =~ /zip/i || $ext =~ /gz/i) { $icon = "compressed.gif"; }
 	  if ($ext =~ /gif/i) { $icon = "image2.gif"; }
 	  if ($ext =~ /pdf/i) { $icon = "pdf.gif"; }
+	  if ($ext =~ /dvi/i) { $icon = "dvi.gif"; }
+	  if ($ext =~ /wav/i) { $icon = "sound1.gif"; }
+	  if ($ext =~ /mp3/i) { $icon = "sound1.gif"; }
+	  if ($ext =~ /php/i) { $icon = "phps.gif"; }
 	  if ($ext =~ /jpg/i || $ext =~ /jpeg/i) { $icon = "image2.gif"; }
 
 	  print "<tr valign=\"bottom\">\n";
