@@ -4,7 +4,7 @@
 #                   Copyright 2000 all rights reserved
 #                   This software is released under the GNU GPL license
 ###################################################################################
-# 	$rcs = ' $Id: index.cgi,v 1.5 2001/12/06 22:29:58 dan Exp $ ' ;	
+# 	$rcs = ' $Id: index.cgi,v 1.6 2001/12/31 05:40:21 dan Exp $ ' ;	
 ###################################################################################
 use strict;
 use CGI qw(param);
@@ -109,18 +109,16 @@ sub printFiles {
 	  my $ext = $fnameExt[$#fnameExt];
 
 	  my $icon = "generic.gif";
-	  if ($ext =~ /htm/i || $ext =~ /html/i) { $icon = "portal.gif"; }
-	  if ($ext =~ /txt/i) { $icon = "a.gif"; }
-	  if ($ext =~ /pl/i || $ext =~ /cgi/i) { $icon = "script.gif"; }
-	  if ($ext =~ /mov/i || $ext =~ /mpg/i) { $icon = "small/movie.gif"; }
-	  if ($ext =~ /zip/i || $ext =~ /gz/i) { $icon = "compressed.gif"; }
-	  if ($ext =~ /gif/i) { $icon = "image2.gif"; }
-	  if ($ext =~ /pdf/i) { $icon = "pdf.gif"; }
-	  if ($ext =~ /dvi/i) { $icon = "dvi.gif"; }
-	  if ($ext =~ /wav/i) { $icon = "sound1.gif"; }
-	  if ($ext =~ /mp3/i) { $icon = "sound1.gif"; }
-	  if ($ext =~ /php/i) { $icon = "phps.gif"; }
-	  if ($ext =~ /jpg/i || $ext =~ /jpeg/i) { $icon = "image2.gif"; }
+	  my $typedesc = "asdfasdf";
+	  if ($ext =~ /htm/i || $ext =~ /html/i) { $icon = "portal.gif"; $typedesc = "HTML Document"}
+	  if ($ext =~ /txt/i) { $icon = "a.gif"; $typedesc = "Text File"}
+	  if ($ext =~ /(pl|cgi|py|sh|php)/i || $ext =~ /cgi/i) { $icon = "script.gif"; $typedesc = "Script Application" }
+	  if ($ext =~ /(mov|mpeg|mpg|avi|asf)/i) { $icon = "small/movie.gif"; $typedesc = "Movie Video"}
+	  if ($ext =~ /(tar|gz|zip|arj|rar)/i) { $icon = "compressed.gif"; $typedesc = "Compressed File"}
+	  if ($ext =~ /pdf/i) { $icon = "pdf.gif"; $typedesc = "Adobe PDF"}
+	  if ($ext =~ /(dvi|tex|ps|doc)/i) { $icon = "dvi.gif"; $typedesc = "Document"}
+	  if ($ext =~ /(wav|mp3|wav)/i) { $icon = "sound1.gif"; $typedesc = "Audio File"}
+	  if ($ext =~ /(jpg|gif|jpeg|tiff|bmp)/i) { $icon = "image2.gif"; $typedesc = "Graphic Image"}
 
 	  print "<tr valign=\"bottom\">\n";
 
@@ -132,7 +130,7 @@ sub printFiles {
 	  print "<td><img src=\"$icon_url/$icon\"> <font size=\"-1\">" .
 		"<a href=\"index.cgi?file=$temp_file\"><b>$old_temp_file</b></a></font></td>\n";
 	  print "<td><font size=\"-1\">$size kB</font></td>\n";
-	  print "<td><font size=\"-1\">$ext</font></td>\n";
+	  print "<td><font size=\"-1\">$typedesc</font></td>\n";
 	  print "</tr>\n\n";
 	}
   }
