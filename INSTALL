@@ -1,0 +1,49 @@
+
+Requirements
+------------
+- perl 5
+- postgresql 6.5 or later (I'm using 7.0)
+- DBD::Pg  (postgresql DBI modules)
+- File::stat;
+
+
+Installation Instructions
+-------------------------
+1) create a user called wwwindex in your postgres database
+    o  createuser --createdb -no-adduser -P
+    o  then type in wwwindex and its password
+
+2) create a database called wwwindex
+    o  createdb -U wwwindex wwwindex
+
+3) create a database table called files:
+    o  psql -U wwwindex wwwindex
+    o  create table files (
+           name VARCHAR(512),
+           hits INTEGER NOT NULL,
+           description VARCHAR(256)
+         );
+
+4) copy index.cgi to somewhere with +ExecCGI permissions.
+   For example your cgi-bin directory:
+         cp index.cgi /home/httpd/cgi-bin
+
+5) Give it execute permissions:
+        chmod 755 /home/httpd/cgi-bin/index.cgi
+
+6) Edit the top part of index.cgi and wwwdesc.pl to give it the runtime
+   parameters.  You may also need to edit the first line to give it your
+   path to perl's executable which can be found by running:
+          which perl
+
+7) Link to it in each directory you want to use it.
+         ln -s /home/httpd/cgi-bin/index.cgi .
+
+Thats it, it will now create indexes of that directory.
+
+If you want to update the descriptions of files in a directory, just go to 
+that directory and run wwwdesc.pl.  It will ask you for your password and 
+then a description of each file inside.
+
+Additionaly, if you create a .welcome.html file in a directory with 
+index.cgi it will display that just after the header.
