@@ -1,10 +1,10 @@
-#! /usr/bin/perl -w
+#! /usr/bin/perl
 ###################################################################################
 #              Dan Cardamore <wombat@hld.ca>
 #                   Copyright 2000 all rights reserved
 #                   This software is released under the GNU GPL license
 ###################################################################################
-# 	$rcs = ' $Id: index.cgi,v 1.2 2001/04/05 01:04:29 wombat Exp $ ' ;	
+# 	$rcs = ' $Id: index.cgi,v 1.3 2001/11/29 23:12:40 wombat Exp $ ' ;	
 ###################################################################################
 use strict;
 use CGI qw(param);
@@ -21,11 +21,11 @@ use vars qw/$dbname $dbhost $dbuser $dbpass $icon_url $header $footer $backgroun
 $dbname = 'wwwindex';
 $dbhost = 'localhost';
 $dbuser = 'wwwindex';
-$dbpass = '';
+$dbpass = 'wwwindex';
 
 # this is the url of the directory where you have your icons
-$icon_url = 'http://base.hld.ca/cgi/index_gifs';
-$site_logo = 'http://base.hld.ca/images/hld.gif';
+$icon_url = 'http://hld.ca/icons';
+$site_logo = 'http://hld.ca/images/hld.gif';
 $site_url = 'http://www.hld.ca';
 # this is the path to header.shtml
 $header = '/home/httpd/html/template/header.shtml';
@@ -40,7 +40,7 @@ $background = '#bebebe';
 
 sub redirect {
   my $file = param('file');
-  my $dbh = DBI->connect("dbi:Pg:dbname=$dbname;host=$dbhost", "$dbuser", "$dbpass") or die $!;
+  my $dbh = DBI->connect("dbi:mysql:dbname=$dbname;host=$dbhost", $dbuser, $dbpass) or die $!;
   my $pwd = `pwd`;
   chomp $pwd;
   my $dbfile = relpath("$pwd" ."/$file");		
@@ -57,12 +57,13 @@ sub redirect {
 }
 
 sub handleThisDir {
-  my $dbh = DBI->connect("dbi:Pg:dbname=$dbname;host=$dbhost", "$dbuser", "$dbpass") or die $!;
+  my $dbh = DBI->connect("dbi:mysql:dbname=$dbname;host=$dbhost", $dbuser, $dbpass) or die $!;
   my $pwd = `pwd`;
+  my ($name, $date, $size, $random, $thumbed);
   chomp $pwd;
-  my $psth = $dbh->prepare( "SELECT * FROM pictures where name='$pwd'" );
-  $psth->execute;
-  my ($name, $date, $size, $random, $thumbed) = $psth->fetchrow_array;
+  #my $psth = $dbh->prepare( "SELECT * FROM pictures where name='$pwd'" );
+  #$psth->execute;
+  #my ($name, $date, $size, $random, $thumbed) = $psth->fetchrow_array;
 
   &printDirs($dbh, $pwd);
   if (not defined $name) {
@@ -165,14 +166,15 @@ sub printFiles {
 		$description = "";
 	  }
 
-	  my $icon = "file.gif";
-	  if ($ext =~ /htm/i || $ext =~ /html/i) { $icon = "html.gif"; }
-	  if ($ext =~ /txt/i) { $icon = "txt.gif"; }
-	  if ($ext =~ /pl/i || $ext =~ /cgi/i) { $icon = "cgi.gif"; }
-	  if ($ext =~ /zip/i || $ext =~ /gz/i) { $icon = "zip.gif"; }
-	  if ($ext =~ /exe/i) { $icon = "exe.gif"; }
-	  if ($ext =~ /gif/i) { $icon = "gif.gif"; }
-	  if ($ext =~ /jpg/i || $ext =~ /jpeg/i) { $icon = "jpg.gif"; }
+	  my $icon = "generic.gif";
+	  if ($ext =~ /htm/i || $ext =~ /html/i) { $icon = "portal.gif"; }
+	  if ($ext =~ /txt/i) { $icon = "a.gif"; }
+	  if ($ext =~ /pl/i || $ext =~ /cgi/i) { $icon = "script.gif"; }
+	  if ($ext =~ /mov/i || $ext =~ /mpg/i) { $icon = "small/movie.gif"; }
+	  if ($ext =~ /zip/i || $ext =~ /gz/i) { $icon = "compressed.gif"; }
+	  if ($ext =~ /gif/i) { $icon = "image2.gif"; }
+	  if ($ext =~ /pdf/i) { $icon = "pdf.gif"; }
+	  if ($ext =~ /jpg/i || $ext =~ /jpeg/i) { $icon = "image2.gif"; }
 		
 	  print "<tr valign=\"bottom\">\n";
 	
@@ -500,7 +502,7 @@ if (defined param('file')) {
   &redirect;
 }
 else {
-  my $dbh = DBI->connect("dbi:Pg:dbname=$dbname;host=$dbhost", "$dbuser", "$dbpass") or die $!;
+  my $dbh = DBI->connect("dbi:mysql:dbname=$dbname;host=$dbhost", $dbuser, $dbpass) or die $!;
   my $pwd = `pwd`;
   chomp $pwd;
   my $dbfile = relpath("$pwd");		
